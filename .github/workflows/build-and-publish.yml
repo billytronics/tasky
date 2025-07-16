@@ -6,11 +6,7 @@
 name: Build and Publish Docker image
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-      - 'release/*'
+  workflow_dispatch: {}
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
