@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasky-deployment
+  labels:
+    app: tasky
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tasky
+  template:
+    metadata:
+      labels:
+        app: tasky
+    spec:
+      containers:
+      - name: tasky-container
+        image: billytronics/tasky:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://mongo-admin:mongo-pw@ec2-13-214-129-225.ap-southeast-1.compute.amazonaws.com/?retryWrites=true&w=majority"
+        - name: JWT_SECRET
+          value: "my-very-secret-key"
+        - name: JWT_EXPIRES_IN
+          value: "1d"
+        securityContext:
+          privileged: true # This grants the container 'cluster-admin privileges'.
