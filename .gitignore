@@ -25,6 +25,9 @@ test
 tmp
 local
 
+#testing
+*.local
+
 # Terraform state files and backups
 *.tfstate
 *.tfstate.*
