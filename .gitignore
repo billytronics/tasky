@@ -24,3 +24,29 @@ deploy
 test
 tmp
 local
+
+# Terraform state files and backups
+*.tfstate
+*.tfstate.*
+
+# Terraform local cache and plugins
+.terraform/
+
+# Crash log files
+crash.log
+
+# Terraform sensitive variable definitions (if you use them, though not recommended for secrets)
+*.tfvars
+*.tfvars.json
+
+# Override files (used for local development overrides)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Provider-specific cached files (e.g., for some providers)
+.terraform.d/
+
+# CLI configuration (if placed in the project root, though usually in ~/.terraformrc)
+.terraformrc
