@@ -36,16 +36,14 @@ jobs:
         mv ./kubectl ~/.local/bin/kubectl
         kubectl version --client
 
-#    - name: Terraform Init
-#      run: terraform -chdir=terraform init
+    - name: Terraform Init
+      run: terraform -chdir=terraform/k8s init
 
-#    - name: Terraform Apply
-#      run: terraform -chdir=terraform apply -auto-approve
+    - name: Terraform Apply
+      run: terraform -chdir=terraform/k8s apply -auto-approve
 
     - name: Deploy application to cluster
       run: |
+        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name tasky-cluster-tf
         envsubst < k8s/tasky-deployment.yaml.template > k8s/tasky-deployment.yaml
-        cat k8s/tasky-deployment.yaml
-
-#        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name tasky-cluster-tf
-#        kubectl apply -f k8s
+        kubectl apply -f k8s
