@@ -44,7 +44,8 @@ jobs:
 
     - name: Deploy application to cluster
       run: |
-#        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name tasky-cluster-tf
         envsubst < k8s/tasky-deployment.yaml.template > k8s/tasky-deployment.yaml
         cat k8s/tasky-deployment.yaml
+
+#        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name tasky-cluster-tf
 #        kubectl apply -f k8s
