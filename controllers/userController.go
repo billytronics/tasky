@@ -94,7 +94,13 @@ func Login(c * gin.Context){
 	}
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
-	err := userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)
+	    // --- START OF VULNERABLE CHANGE ---
+    // Original line: err := userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)
+    // Vulnerable change: Use $where operator with direct string concatenation.
+    jsQuery := fmt.Sprintf("this.email == '%s'", *user.Email)
+    err := userCollection.FindOne(ctx, bson.M{"$where": jsQuery}).Decode(&foundUser)
+    // --- END OF VULNERABLE CHANGE ---
+	
 	defer cancel()
 
 	if err != nil {
