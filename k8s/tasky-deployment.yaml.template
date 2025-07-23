@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasky-deployment
+  namespace: tasky
+  labels:
+    app: tasky
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tasky
+  template:
+    metadata:
+      labels:
+        app: tasky
+    spec:
+      containers:
+      - name: tasky-container
+        image: ${ECR_REGISTRY}/ECR_REPOSITORY:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGODB_URI
+          value: "$MONGODB_URI"
+        - name: JWT_SECRET
+          value: "$JWT_SECRET"
+        - name: JWT_EXPIRES_IN
+          value: "1d"
+        securityContext:
+          privileged: true # This grants the container 'cluster-admin privileges'.
