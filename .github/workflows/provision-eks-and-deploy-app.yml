@@ -1,0 +1,51 @@
+name: 'Provision EKS and Deploy Tasky'
+
+on:
+  workflow_dispatch: {}
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ECR_REGISTRY: ${{ vars.ECR_REGISTRY }} 
+  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+
+jobs:
+  provision-eks-and-deploy-app:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Install kubectl
+      run: |
+        curl -LO https://dl.k8s.io/release/v1.29.2/bin/linux/amd64/kubectl
+        chmod +x kubectl
+        mkdir -p ~/.local/bin
+        mv ./kubectl ~/.local/bin/kubectl
+        kubectl version --client
+
+#    - name: Terraform Init
+#      run: terraform -chdir=terraform init
+
+#    - name: Terraform Apply
+#      run: terraform -chdir=terraform apply -auto-approve
+
+    - name: Deploy application to cluster
+      run: |
+        envsubst < k8s/tasky-deployment.yaml.template > k8s/tasky-deployment.yaml
+        cat k8s/tasky-deployment.yaml
+
+#        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name tasky-cluster-tf
+#        kubectl apply -f k8s
