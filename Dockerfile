@@ -1,5 +1,5 @@
 # Building the binary of the App
-FROM golang:1.19 AS build
+FROM cgr.dev/chainguard/go:latest AS build
 
 WORKDIR /go/src/tasky
 COPY . .
