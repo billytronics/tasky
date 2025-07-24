@@ -18,6 +18,7 @@ spec:
       containers:
       - name: tasky-container
         image: ${ECR_REGISTRY}/ECR_REPOSITORY:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
