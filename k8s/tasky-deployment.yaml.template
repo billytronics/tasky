@@ -23,9 +23,9 @@ spec:
         - containerPort: 8080
         env:
         - name: MONGODB_URI
-          value: "$MONGODB_URI"
+          value: "${MONGODB_URI}"
         - name: JWT_SECRET
-          value: "$JWT_SECRET"
+          value: "${JWT_SECRET}"
         - name: JWT_EXPIRES_IN
           value: "1d"
         securityContext:
