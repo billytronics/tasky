@@ -27,6 +27,7 @@ local
 
 #testing
 *.local
+tasky
 
 # Terraform state files and backups
 *.tfstate
