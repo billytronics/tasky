@@ -11,7 +11,7 @@ provider "aws" {
   region = "us-west-2"
 }
 
-resource "aws_s3_bucket" "db-backup-bucket" {
+resource "aws_s3_bucket" "db_backup_bucket" {
   bucket = "billy-tasky-db-backup-bucket-tf"
   tags = {
     automation        = "terraform"
